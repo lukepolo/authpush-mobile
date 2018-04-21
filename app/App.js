@@ -7,6 +7,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Button, Alert } from 'react-native';
+import NotificationsIOS from 'react-native-notifications';
 
 import {
   Platform,
@@ -24,6 +25,39 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  constructor() {
+    super();
+
+    console.info(NotificationsIOS)
+
+
+    NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+    NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+    NotificationsIOS.requestPermissions();
+  }
+
+  onPushRegistered(deviceToken) {
+    // TODO: Send the token to my server so it could send back push notifications...
+    console.log("Device Token Received", deviceToken);
+  }
+
+  onPushRegistrationFailed(error) {
+    // For example:
+    //
+    // error={
+    //   domain: 'NSCocoaErroDomain',
+    //   code: 3010,
+    //   localizedDescription: 'remote notifications are not supported in the simulator'
+    // }
+    console.error(error);
+  }
+
+  componentWillUnmount() {
+    // prevent memory leaks!
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
+    NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+  }
 
   _onPressButton() {
     axios.get('https://d893e206.ngrok.io/api/accounts/1/otp/approve', {
