@@ -16,36 +16,6 @@ import {
   View
 } from 'react-native';
 
-let approveAction = new NotificationAction({
-  activationMode: "background",
-  title: 'Approve',
-  identifier: "APPROVE_ACTION"
-}, (action, completed) => {
-  NotificationsIOS.log("ACTION RECEIVED");
-  NotificationsIOS.log(JSON.stringify(action));
-  this.sendApproval()
-  completed();
-});
-
-let denyAction = new NotificationAction({
-  activationMode: "background",
-  title: 'Deny',
-  identifier: "DENY_ACTION",
-  destructive : true,
-}, (action, completed) => {
-  NotificationsIOS.log("ACTION RECEIVED");
-  NotificationsIOS.log(JSON.stringify(action));
-  console.info('woo deny')
-  completed();
-});
-
-
-let cat = new NotificationCategory({
-  identifier: "APPROVE",
-  actions: [approveAction, denyAction],
-  context: "default",
-});
-
 let host = 'https://c8e47e36.ngrok.io';
 
 type Props = {};
@@ -53,6 +23,37 @@ export default class App extends Component<Props> {
 
   constructor() {
     super();
+
+    let approveAction = new NotificationAction({
+      activationMode: "background",
+      title: 'Approve',
+      identifier: "APPROVE_ACTION"
+    }, (action, completed) => {
+      NotificationsIOS.log("ACTION RECEIVED");
+      NotificationsIOS.log(JSON.stringify(action));
+      this.sendApproval()
+      completed();
+    });
+
+    let denyAction = new NotificationAction({
+      activationMode: "background",
+      title: 'Deny',
+      identifier: "DENY_ACTION",
+      destructive : true,
+    }, (action, completed) => {
+      NotificationsIOS.log("ACTION RECEIVED");
+      NotificationsIOS.log(JSON.stringify(action));
+      console.info('woo deny')
+      completed();
+    });
+
+
+    let cat = new NotificationCategory({
+      identifier: "APPROVE",
+      actions: [approveAction, denyAction],
+      context: "default",
+    });
+
     NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
     NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
     NotificationsIOS.requestPermissions([cat]);
@@ -126,13 +127,16 @@ export default class App extends Component<Props> {
 
   sendApproval() {
     AsyncStorage.getItem('@auth:token').then((token) => {
+      console.info('sending now')
       axios.get(`${host}/api/accounts/1/otp/approve`, {
         headers : {
           Authorization: `Bearer ${token}`
         }
       }).then((response) => {
+        console.info('does it send?')
         console.info(response)
       }, (error) => {
+        console.info('does it error?')
         console.info(error);
       })
     })
