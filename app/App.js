@@ -6,8 +6,8 @@
 
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Button, Alert } from 'react-native';
-import NotificationsIOS from 'react-native-notifications';
+import { Button, Alert, AlertIOS } from 'react-native';
+import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
 import {
   Platform,
@@ -23,6 +23,39 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+
+let upvoteAction = new NotificationAction({
+  activationMode: "background",
+  title: 'Approve',
+  identifier: "UPVOTE_ACTION"
+}, (action, completed) => {
+  NotificationsIOS.log("ACTION RECEIVED");
+  NotificationsIOS.log(JSON.stringify(action));
+
+  completed();
+});
+
+
+let denyAction = new NotificationAction({
+  activationMode: "foreground",
+  title: 'Deny',
+  identifier: "UPVOTE_ACTION",
+  destructive : true,
+}, (action, completed) => {
+  NotificationsIOS.log("ACTION RECEIVED");
+  NotificationsIOS.log(JSON.stringify(action));
+
+  completed();
+});
+
+
+let cat = new NotificationCategory({
+  identifier: "APPROVE",
+  actions: [upvoteAction, denyAction],
+  context: "default",
+});
+
+
 type Props = {};
 export default class App extends Component<Props> {
 
@@ -30,7 +63,7 @@ export default class App extends Component<Props> {
     super();
     NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
     NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-    NotificationsIOS.requestPermissions();
+    NotificationsIOS.requestPermissions([cat]);
 
     NotificationsIOS.consumeBackgroundQueue();
 
@@ -49,11 +82,10 @@ export default class App extends Component<Props> {
 
   onNotificationReceivedForeground(notification) {
     console.log("Notification Received - Foreground", notification);
-
-    this.setState({
-      myText : notification._data.label
-    });
-
+    let data = notification.getData();
+    // this.setState({
+    //   myText : `Should we approve ${data.label} to log into ${data.domain} `
+    // });
   }
 
   onNotificationReceivedBackground(notification) {
@@ -62,8 +94,12 @@ export default class App extends Component<Props> {
 
   onNotificationOpened(notification) {
     console.log("Notification opened by device user", notification);
+    // aka lets go to the approval sections!
   }
 
+  onPushKitRegistered(deviceToken) {
+    console.log("PushKit Token Received: " + deviceToken);
+  }
 
   onPushRegistered(deviceToken) {
     // TODO: Send the token to my server so it could send back push notifications...
@@ -71,13 +107,6 @@ export default class App extends Component<Props> {
   }
 
   onPushRegistrationFailed(error) {
-    // For example:
-    //
-    // error={
-    //   domain: 'NSCocoaErroDomain',
-    //   code: 3010,
-    //   localizedDescription: 'remote notifications are not supported in the simulator'
-    // }
     console.error(error);
   }
 
