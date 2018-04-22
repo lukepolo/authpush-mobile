@@ -13,7 +13,7 @@ export const SignedOut = StackNavigator({
 });
 
 export const SignedIn = StackNavigator({
-  Home: {
+  Dashboard: {
     screen: Dashboard,
   },
 });

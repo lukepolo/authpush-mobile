@@ -4,6 +4,8 @@ import { AsyncStorage, TextInput, Button } from "react-native";
 
 import { StyleSheet, Text, View } from "react-native";
 
+let host = "https://c8e47e36.ngrok.io";
+
 export default class Login extends Component {
   constructor() {
     super();
@@ -11,14 +13,16 @@ export default class Login extends Component {
       email: null,
       password: null,
     };
+    this.navigation = null;
   }
 
   login() {
+    let { navigate } = this.props.navigation;
     axios.post(`${host}/api/token`, this.state).then(
       (response) => {
         AsyncStorage.setItem("@auth:token", response.data.accessToken).then(
           () => {
-            console.info("go to dashboard");
+            navigate("Dashboard");
           },
         );
       },
