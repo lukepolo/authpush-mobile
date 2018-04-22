@@ -28,14 +28,33 @@ export default class App extends Component<Props> {
 
   constructor() {
     super();
-
-    console.info(NotificationsIOS)
-
-
     NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
     NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
     NotificationsIOS.requestPermissions();
+
+    NotificationsIOS.consumeBackgroundQueue();
+
+    this._boundOnNotificationReceivedForeground = this.onNotificationReceivedForeground.bind(this);
+    this._boundOnNotificationReceivedBackground = this.onNotificationReceivedBackground.bind(this);
+    this._boundOnNotificationOpened = this.onNotificationOpened.bind(this);
+
+    NotificationsIOS.addEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
+    NotificationsIOS.addEventListener('notificationReceivedBackground', this._boundOnNotificationReceivedBackground);
+    NotificationsIOS.addEventListener('notificationOpened', this._boundOnNotificationOpened);
   }
+
+  onNotificationReceivedForeground(notification) {
+    console.log("Notification Received - Foreground", notification);
+  }
+
+  onNotificationReceivedBackground(notification) {
+    console.log("Notification Received - Background", notification);
+  }
+
+  onNotificationOpened(notification) {
+    console.log("Notification opened by device user", notification);
+  }
+
 
   onPushRegistered(deviceToken) {
     // TODO: Send the token to my server so it could send back push notifications...
@@ -57,6 +76,9 @@ export default class App extends Component<Props> {
     // prevent memory leaks!
     NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
     NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+    NotificationsIOS.removeEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
+    NotificationsIOS.removeEventListener('notificationReceivedBackground', this._boundOnNotificationReceivedBackground);
+    NotificationsIOS.removeEventListener('notificationOpened', this._boundOnNotificationOpened);
   }
 
   _onPressButton() {

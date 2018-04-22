@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 #import "RNNotifications.h"
+#import "RNNotifications.h"
+#import <PushKit/PushKit.h>
 #import "AppDelegate.h"
 
 
@@ -56,6 +58,28 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
   [RNNotifications didReceiveLocalNotification:notification];
+}
+
+// PushKit API Support
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(NSString *)type
+{
+  [RNNotifications didUpdatePushCredentials:credentials forType:type];
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type
+{
+  [RNNotifications didReceiveRemoteNotification:payload.dictionaryPayload];
+}
+
+// Required for the notification actions.
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
+{
+  [RNNotifications handleActionWithIdentifier:identifier forLocalNotification:notification withResponseInfo:responseInfo completionHandler:completionHandler];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
+{
+  [RNNotifications handleActionWithIdentifier:identifier forRemoteNotification:userInfo withResponseInfo:responseInfo completionHandler:completionHandler];
 }
 
 @end
