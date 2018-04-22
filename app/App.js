@@ -6,7 +6,7 @@
 
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Button, Alert, AlertIOS } from 'react-native';
+import { AsyncStorage, TextInput, Button } from 'react-native';
 import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
 import {
@@ -16,45 +16,37 @@ import {
   View
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu ',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-
-let upvoteAction = new NotificationAction({
+let approveAction = new NotificationAction({
   activationMode: "background",
   title: 'Approve',
-  identifier: "UPVOTE_ACTION"
+  identifier: "APPROVE_ACTION"
 }, (action, completed) => {
   NotificationsIOS.log("ACTION RECEIVED");
   NotificationsIOS.log(JSON.stringify(action));
-
+  this.sendApproval()
   completed();
 });
 
-
 let denyAction = new NotificationAction({
-  activationMode: "foreground",
+  activationMode: "background",
   title: 'Deny',
-  identifier: "UPVOTE_ACTION",
+  identifier: "DENY_ACTION",
   destructive : true,
 }, (action, completed) => {
   NotificationsIOS.log("ACTION RECEIVED");
   NotificationsIOS.log(JSON.stringify(action));
-
+  console.info('woo deny')
   completed();
 });
 
 
 let cat = new NotificationCategory({
   identifier: "APPROVE",
-  actions: [upvoteAction, denyAction],
+  actions: [approveAction, denyAction],
   context: "default",
 });
 
+let host = 'https://c8e47e36.ngrok.io';
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -76,16 +68,15 @@ export default class App extends Component<Props> {
     NotificationsIOS.addEventListener('notificationOpened', this._boundOnNotificationOpened);
 
     this.state = {
-      myText: 'My Original Text'
+      email: 'support@codepier.io',
+      password : 'secret'
     }
   }
 
   onNotificationReceivedForeground(notification) {
     console.log("Notification Received - Foreground", notification);
     let data = notification.getData();
-    // this.setState({
-    //   myText : `Should we approve ${data.label} to log into ${data.domain} `
-    // });
+    console.info('we should go to the requests screen')
   }
 
   onNotificationReceivedBackground(notification) {
@@ -120,14 +111,30 @@ export default class App extends Component<Props> {
   }
 
   _onPressButton() {
-    axios.get('https://d893e206.ngrok.io/api/accounts/1/otp/approve', {
-      headers : {
-        Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImRlOWQyZjllOTViNDZkODE5ZjM3NTFlODlmZTZlNjQ0Y2JjNTU4ZDJhMWY3YzkzNWQ5NjZiZjg5ZjU4OGFjNWY1MzMzYjI4MTM1YTg0NmZiIn0.eyJhdWQiOiIxIiwianRpIjoiZGU5ZDJmOWU5NWI0NmQ4MTlmMzc1MWU4OWZlNmU2NDRjYmM1NThkMmExZjdjOTM1ZDk2NmJmODlmNTg4YWM1ZjUzMzNiMjgxMzVhODQ2ZmIiLCJpYXQiOjE1MjQyODU2MTksIm5iZiI6MTUyNDI4NTYxOSwiZXhwIjoxNTU1ODIxNjE5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.x6FUBxUwQNFWhhOTx_-gLeoKDumWE_xdrKiqY5QzkLOKflww12DK5TUzC7WJuhGbpwG1Nv0vxDT-xcyeQK2yUH-jUQlLFAAhhLLBV-5EjlTWz4s8U-CSD_YChMDBLKWtApIwgT0_nHVswGRGLs66246i3KiZm38rMHwRggoP5hV1piHURtLHvQ3n03ekUg3Qskb_xxtQuGeUZXPmDaO5qkbE8QycTu6WC5IZBLflRUWh672hfSkmBpRc_GUn4Vbk29i4RqPCOeej9WO-QeeAzmMMx1kY8oFKeToim2q1ARh0_T51oHiD1dpPZQOOaOSgrZRT45fb6SA4xYH7yTWjP_41c-cshmDdMpqMOEsuoL8162W_JCL2FhDcqerj0nG8GDaYzYh7o5XfWd_ZSAKrB0-SNDqANd00MvK4aAbnFNnVpTHIS_R5Z37pVly6i4JaffRExUmB7nf8Tu5mRJi4YVmVO7BQ4fGY4Fr_FEvCT6k7S108HNlavlMFokoqhwTObAtDXv7KbUapWg0vkj1jhoookd2XUl88lDE2kwAUjS_m7u-QYb2Xx0NOqBZpgtUhbhdp_7078lHk0774z2BFrMKuifbbaOTRJH8rpGYn54ctUdKNvrxZ2al8Ejeu3rsEMboLBRsBkIA7uUj9rPbLxOZaSDB_DUscWLK-Aj0eOeY'
-      }
-    }).then((response) => {
-      console.info(response.data)
+    this.sendApproval()
+  }
+
+  login() {
+    axios.post(`${host}/api/token`, this.state).then((response) => {
+      AsyncStorage.setItem('@auth:token', response.data.accessToken).then(() => {
+        console.info('go to dashboard');
+      });
     }, (error) => {
-      console.info(error);
+      console.log(error)
+    })
+  }
+
+  sendApproval() {
+    AsyncStorage.getItem('@auth:token').then((token) => {
+      axios.get(`${host}/api/accounts/1/otp/approve`, {
+        headers : {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((response) => {
+        console.info(response)
+      }, (error) => {
+        console.info(error);
+      })
     })
   }
 
@@ -135,19 +142,26 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Please Login
         </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <Text>
-          {this.state.myText}
-        </Text>
+        <TextInput
+          style={{height: 40}}
+          placeholder="Email"
+          keyboardType="email-address"
+          onChangeText={(email) => this.setState({email})}
+          value={this.state.email}
+        />
+        <TextInput
+          style={{height: 40}}
+          placeholder="Password"
+          onChangeText={(password) => this.setState({password})}
+          value={this.state.password}
+          secureTextEntry={true}
+        />
         <Button
-          onPress={this._onPressButton}
-          title="Approve"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+          onPress={this.login.bind(this)}
+          title="Login"
+          accessibilityLabel="Login"
         />
       </View>
     );
