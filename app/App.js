@@ -41,10 +41,19 @@ export default class App extends Component<Props> {
     NotificationsIOS.addEventListener('notificationReceivedForeground', this._boundOnNotificationReceivedForeground);
     NotificationsIOS.addEventListener('notificationReceivedBackground', this._boundOnNotificationReceivedBackground);
     NotificationsIOS.addEventListener('notificationOpened', this._boundOnNotificationOpened);
+
+    this.state = {
+      myText: 'My Original Text'
+    }
   }
 
   onNotificationReceivedForeground(notification) {
     console.log("Notification Received - Foreground", notification);
+
+    this.setState({
+      myText : notification._data.label
+    });
+
   }
 
   onNotificationReceivedBackground(notification) {
@@ -101,6 +110,9 @@ export default class App extends Component<Props> {
         </Text>
         <Text style={styles.instructions}>
           {instructions}
+        </Text>
+        <Text>
+          {this.state.myText}
         </Text>
         <Button
           onPress={this._onPressButton}
