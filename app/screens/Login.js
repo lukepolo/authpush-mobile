@@ -1,51 +1,48 @@
-import axios from 'axios';
-import React, { Component } from 'react';
-import { AsyncStorage, TextInput, Button } from 'react-native';
+import axios from "axios";
+import React, { Component } from "react";
+import { AsyncStorage, TextInput, Button } from "react-native";
 
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 
 export default class Login extends Component {
-
   constructor() {
     super();
     this.state = {
       email: null,
-      password : null,
-    }
+      password: null,
+    };
   }
 
   login() {
-    axios.post(`${host}/api/token`, this.state).then((response) => {
-      AsyncStorage.setItem('@auth:token', response.data.accessToken).then(() => {
-        console.info('go to dashboard');
-      });
-    }, (error) => {
-      console.log(error)
-    })
+    axios.post(`${host}/api/token`, this.state).then(
+      (response) => {
+        AsyncStorage.setItem("@auth:token", response.data.accessToken).then(
+          () => {
+            console.info("go to dashboard");
+          },
+        );
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
   }
-
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Please Login
-        </Text>
+        <Text style={styles.welcome}>Please Login</Text>
         <TextInput
-          style={{height: 40}}
+          style={{ height: 40 }}
           placeholder="Email"
           keyboardType="email-address"
-          onChangeText={(email) => this.setState({email})}
+          onChangeText={(email) => this.setState({ email })}
           value={this.state.email}
         />
         <TextInput
-          style={{height: 40}}
+          style={{ height: 40 }}
           placeholder="Password"
-          onChangeText={(password) => this.setState({password})}
+          onChangeText={(password) => this.setState({ password })}
           value={this.state.password}
           secureTextEntry={true}
         />
@@ -62,8 +59,8 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
   },
 });
