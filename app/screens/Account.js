@@ -7,11 +7,10 @@ import TimerMixin from "react-timer-mixin";
 class Account extends Component {
   constructor() {
     super();
-    this.countDown = 0;
     this.oneTimeTokenGenerator = new OneTimeTokenGenerator();
 
     this.state = {
-      countDown: 0,
+      countDown: this._countdown(),
     };
   }
 
@@ -21,9 +20,12 @@ class Account extends Component {
     );
   }
 
+  _countdown() {
+    return 30 - Math.round(new Date().getTime() / 1000.0) % 30;
+  }
+
   updateCountDown() {
-    let epoch = Math.round(new Date().getTime() / 1000.0);
-    let countDown = 30 - epoch % 30;
+    let countDown = this._countdown();
 
     if (countDown <= 0) {
       this.generateToken();
