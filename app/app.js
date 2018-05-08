@@ -1,5 +1,7 @@
 import React from "react";
+import createStore from "./store";
 import { isSignedIn } from "./auth";
+import { Provider } from "react-redux";
 import { createRootNavigator } from "./router";
 import {
   registerNotificationServices,
@@ -36,9 +38,15 @@ export default class App extends React.Component {
   }
 
   render() {
+    let store = createStore();
+
     const { checkedSignIn, signedIn } = this.state;
     const Layout = createRootNavigator(checkedSignIn, signedIn);
-    return <Layout />;
+    return (
+      <Provider store={store}>
+        <Layout />
+      </Provider>
+    );
   }
 
   componentWillUnmount() {
