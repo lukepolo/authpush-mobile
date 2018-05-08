@@ -3,10 +3,6 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 class Dashboard extends Component {
-  constructor() {
-    super();
-  }
-
   addAccount() {
     let { navigate } = this.props.navigation;
     navigate("ScanQR");
@@ -15,12 +11,14 @@ class Dashboard extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Dashboard</Text>
-        <Text>WOO GOT HERE {this.props.accounts.length} </Text>
+        <Text style={styles.welcome}>Accounts</Text>
+        {this.props.accounts.map((account, index) => {
+          return <Text key={index}>{account.label}</Text>;
+        })}
         <Button
           onPress={this.addAccount.bind(this)}
-          title="Add A Account"
-          accessibilityLabel="Add A Account"
+          title="Add a new account"
+          accessibilityLabel="Add a new account"
         />
       </View>
     );
@@ -30,6 +28,7 @@ class Dashboard extends Component {
 const styles = StyleSheet.create({});
 
 export default connect((state) => {
+  console.info(state);
   return {
     accounts: state.accountStore.accounts,
   };

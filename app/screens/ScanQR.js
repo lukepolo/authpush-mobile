@@ -1,9 +1,10 @@
+import { connect } from "react-redux";
 import React, { Component } from "react";
+import { AccountActionCreators } from "../store/actions/accounts";
 
 import {
   StyleSheet,
   Dimensions,
-  Linking,
   Text,
   View,
   TouchableOpacity,
@@ -11,11 +12,10 @@ import {
 
 import QRCodeScanner from "react-native-qrcode-scanner";
 
-export default class ScanScreen extends Component {
-  onSuccess(e) {
-    Linking.openURL(e.data).catch((err) =>
-      console.error("An error occured", err),
-    );
+class ScanScreen extends Component {
+  onSuccess(qrResponse) {
+    this.props.dispatch(AccountActionCreators.addAccount(qrResponse.data));
+    this.backToDashboard();
   }
 
   backToDashboard() {
@@ -79,3 +79,5 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
 });
+
+export default connect()(ScanScreen);
