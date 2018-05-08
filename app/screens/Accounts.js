@@ -2,7 +2,24 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-class Dashboard extends Component {
+class Account extends Component {
+  viewAccount() {
+    this.props.navigation.navigate("Account", {
+      account: this.props.account,
+    });
+  }
+
+  render() {
+    return (
+      <Button
+        onPress={this.viewAccount.bind(this)}
+        title={this.props.account.name}
+      />
+    );
+  }
+}
+
+class Accounts extends Component {
   addAccount() {
     let { navigate } = this.props.navigation;
     navigate("ScanQR");
@@ -10,10 +27,16 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Accounts</Text>
+      <View>
+        <Text>Accounts</Text>
         {this.props.accounts.map((account, index) => {
-          return <Text key={index}>{account.label}</Text>;
+          return (
+            <Account
+              key={index}
+              account={account}
+              navigation={this.props.navigation}
+            />
+          );
         })}
         <Button
           onPress={this.addAccount.bind(this)}
@@ -28,8 +51,7 @@ class Dashboard extends Component {
 const styles = StyleSheet.create({});
 
 export default connect((state) => {
-  console.info(state);
   return {
     accounts: state.accountStore.accounts,
   };
-})(Dashboard);
+})(Accounts);

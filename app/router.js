@@ -5,7 +5,8 @@ import { StackNavigator, SwitchNavigator } from "react-navigation";
 import Login from "./screens/Login";
 import Splash from "./screens/Splash";
 import ScanQR from "./screens/ScanQR";
-import Dashboard from "./screens/Dashboard";
+import Account from "./screens/Account";
+import Dashboard from "./screens/Accounts";
 
 export const SignedOut = StackNavigator({
   SignIn: {
@@ -16,6 +17,9 @@ export const SignedOut = StackNavigator({
 export const SignedIn = StackNavigator({
   Dashboard: {
     screen: Dashboard,
+  },
+  Account: {
+    screen: Account,
   },
 });
 
