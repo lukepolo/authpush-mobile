@@ -1,13 +1,13 @@
 import React from "react";
 import configureStore from "./store";
-import { isSignedIn } from "./auth";
 import { Provider } from "react-redux";
+import AuthService from "./services/AuthService";
 import { createRootNavigator } from "./router";
+import { PersistGate } from "redux-persist/integration/react";
 import {
   registerNotificationServices,
   unmountNotificationServices,
 } from "./notifications";
-import { PersistGate } from "redux-persist/integration/react";
 
 // TODO _ there is a bug watching : https://github.com/react-navigation/react-navigation/issues/3956
 import { YellowBox } from "react-native";
@@ -15,6 +15,12 @@ YellowBox.ignoreWarnings([
   "Warning: isMounted(...) is deprecated",
   "Module RCTImageLoader",
 ]);
+
+// TODO - move this into its own service and boot that up
+import axios from "axios";
+
+global.axios = axios;
+axios.baseURL = "https://fb9ead28.ngrok.io";
 
 let { store, persistor } = configureStore();
 
@@ -24,6 +30,8 @@ export default class App extends React.Component {
 
     registerNotificationServices();
 
+    this.authService = new AuthService();
+
     this.state = {
       signedIn: false,
       checkedSignIn: false,
@@ -31,7 +39,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    isSignedIn()
+    this.authService
+      .isSignedIn()
       .then((res) => {
         this.setState({ signedIn: res, checkedSignIn: true });
       })

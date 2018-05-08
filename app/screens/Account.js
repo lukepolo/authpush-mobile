@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import OneTimeTokenGenerator from "./../services/OneTimeTokenGenerator";
-import TimerMixin from "react-timer-mixin";
 
 class Account extends Component {
   constructor() {
@@ -11,6 +10,7 @@ class Account extends Component {
 
     this.state = {
       countDown: this._countdown(),
+      timer: setInterval(this.updateCountDown.bind(this), 1000),
     };
   }
 
@@ -42,7 +42,6 @@ class Account extends Component {
     let account = this.props.navigation.getParam("account");
 
     this.token = this.generateToken();
-    this.timer = setInterval(this.updateCountDown.bind(this), 1000);
 
     return (
       <View>
@@ -56,7 +55,7 @@ class Account extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
+    clearInterval(this.state.timer);
   }
 }
 

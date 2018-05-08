@@ -19,8 +19,8 @@ class ScanScreen extends Component {
   }
 
   backToDashboard() {
-    let { navigate } = this.props.navigation;
-    navigate("Dashboard");
+    // TODO - for the life of me i cant get goBack to work, think we have to reset the stack
+    this.props.navigation.navigate("Dashboard");
   }
 
   render() {

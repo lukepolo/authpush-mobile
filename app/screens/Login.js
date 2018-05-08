@@ -1,15 +1,7 @@
-import axios from "axios";
 import React, { Component } from "react";
-import {
-  AsyncStorage,
-  TextInput,
-  Button,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import AuthService from "../services/AuthService";
 
-let host = "https://9cfc0a23.ngrok.io";
+import { TextInput, Button, StyleSheet, Text, View } from "react-native";
 
 export default class Login extends Component {
   constructor() {
@@ -18,23 +10,14 @@ export default class Login extends Component {
       email: null,
       password: null,
     };
-    this.navigation = null;
+    this.authService = new AuthService();
   }
 
   login() {
     let { navigate } = this.props.navigation;
-    axios.post(`${host}/api/login`, this.state).then(
-      (response) => {
-        AsyncStorage.setItem("@auth:token", response.data.accessToken).then(
-          () => {
-            navigate("Dashboard");
-          },
-        );
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    this.authService.login(this.state).then(() => {
+      navigate("Dashboard");
+    });
   }
 
   render() {
