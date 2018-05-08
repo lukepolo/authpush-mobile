@@ -1,5 +1,5 @@
 import urlOtpAuth from "url-otpauth";
-import DeviceService from "./../../services/DeviceService";
+
 import AccountService from "./../../services/AccountService";
 
 export const AccountsActions = {
@@ -7,7 +7,6 @@ export const AccountsActions = {
   GET_ACCOUNTS: "GET_ACCOUNTS",
 };
 
-const deviceService = new DeviceService();
 const accountService = new AccountService();
 
 export const AccountActionCreators = {
@@ -28,11 +27,9 @@ export const AccountRequests = {
   getAccount: (otpAuthUrl, callback) => {
     let credentials = urlOtpAuth.parse(otpAuthUrl.data);
     return (dispatch) => {
-      accountService.createAccount(credentials).then((account) => {
-        deviceService.addDeviceToAccount(account).then(() => {
-          callback();
-          // dispatch(AccountActionCreators.addAccount(credentials))
-        });
+      accountService.createAccount(credentials).then(() => {
+        dispatch(this.AuthActionCreators.addAccount(credentials));
+        callback();
       });
     };
   },

@@ -1,23 +1,29 @@
 import React, { Component } from "react";
-import AuthService from "../services/AuthService";
-
+import { AuthRequests } from "../store/actions/auth";
 import { TextInput, Button, StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: null,
-      password: null,
+      email: "support@codepier.io",
+      password: "secret",
     };
-    this.authService = new AuthService();
   }
 
   login() {
     let { navigate } = this.props.navigation;
-    this.authService.login(this.state).then(() => {
-      navigate("Dashboard");
-    });
+    this.props.dispatch(
+      AuthRequests.login(this.state, () => {
+        navigate("Dashboard");
+      }),
+    );
+    // this.authService.login(this.state).then(() => {
+    //   deviceService.addDeviceToAccount().then((device) => {
+    //     navigate("Dashboard");
+    //   })
+    // });
   }
 
   render() {
@@ -56,3 +62,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF",
   },
 });
+
+export default connect()(Login);

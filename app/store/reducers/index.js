@@ -1,7 +1,11 @@
 import { combineReducers } from "redux";
+
+import AuthReducers from "./auth";
+import DeviceReducers from "./devices";
 import AccountReducers from "./accounts";
 
-// glue all the reducers together
 export default combineReducers({
+  ...AuthReducers,
+  ...DeviceReducers,
   ...AccountReducers,
 });

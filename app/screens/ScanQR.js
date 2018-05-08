@@ -1,9 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import {
-  AccountActionCreators,
-  AccountRequests,
-} from "../store/actions/accounts";
+import { AccountRequests } from "../store/actions/accounts";
 import {
   StyleSheet,
   Dimensions,

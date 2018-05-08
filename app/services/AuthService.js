@@ -5,19 +5,13 @@ export default class AuthService {
     this.AUTH_TOKEN_KEY = "@auth:token";
   }
 
-  login(form) {
-    return axios.post(`/api/login`, form).then(
-      (response) => {
-        let authToken = response.data.accessToken;
-        axios.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
-
-        return AsyncStorage.setItem(this.AUTH_TOKEN_KEY, authToken);
-      },
-      (error) => {
-        // TODO - how do we show errors?
-        console.log(error);
-      },
-    );
+  login(credentials) {
+    return axios.post(`login`, credentials).then((response) => {
+      let authToken = response.data.accessToken;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+      AsyncStorage.setItem(this.AUTH_TOKEN_KEY, authToken);
+      return authToken;
+    });
   }
 
   onSignIn() {
@@ -32,6 +26,7 @@ export default class AuthService {
 
   isSignedIn() {
     return new Promise((resolve, reject) => {
+      resolve(false);
       AsyncStorage.getItem(this.AUTH_TOKEN_KEY)
         .then((authToken) => {
           if (authToken !== null) {
