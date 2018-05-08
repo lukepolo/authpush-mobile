@@ -19,8 +19,9 @@ YellowBox.ignoreWarnings([
 // TODO - move this into its own service and boot that up
 import axios from "axios";
 
-global.axios = axios;
-axios.baseURL = "https://fb9ead28.ngrok.io";
+global.axios = axios.create({
+  baseURL: "https://fb9ead28.ngrok.io/api/",
+});
 
 let { store, persistor } = configureStore();
 

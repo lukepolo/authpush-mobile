@@ -1,7 +1,9 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { AccountActionCreators } from "../store/actions/accounts";
-
+import {
+  AccountActionCreators,
+  AccountRequests,
+} from "../store/actions/accounts";
 import {
   StyleSheet,
   Dimensions,
@@ -14,8 +16,11 @@ import QRCodeScanner from "react-native-qrcode-scanner";
 
 class ScanScreen extends Component {
   onSuccess(qrResponse) {
-    this.props.dispatch(AccountActionCreators.addAccount(qrResponse.data));
-    this.backToDashboard();
+    this.props.dispatch(
+      AccountRequests.getAccount(qrResponse, () => {
+        this.backToDashboard();
+      }),
+    );
   }
 
   backToDashboard() {
