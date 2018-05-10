@@ -1664,8 +1664,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.authpush.mobile;
 				PRODUCT_NAME = authpush;
-				PROVISIONING_PROFILE = "fe951d0f-2075-4b83-bf90-b9fdc11e5549";
-				PROVISIONING_PROFILE_SPECIFIER = AuthPush;
+				PROVISIONING_PROFILE = "f9a4deac-de05-4371-8c8e-d2af26b237e8";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development io.authpush.mobile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1676,7 +1676,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = authpush/authpush.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1700,8 +1700,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.authpush.mobile;
 				PRODUCT_NAME = authpush;
-				PROVISIONING_PROFILE = "fe951d0f-2075-4b83-bf90-b9fdc11e5549";
-				PROVISIONING_PROFILE_SPECIFIER = AuthPush;
+				PROVISIONING_PROFILE = "c62a0cad-b1ab-4850-8044-d0f1b80057ca";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development io.authpush.mobile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
