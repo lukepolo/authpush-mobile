@@ -1,5 +1,7 @@
 git_url("git@github.com:CodePier/authpush-mobile-certs.git")
 
+readonly("true")
+
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
 app_identifier(["io.authpush.mobile"])
