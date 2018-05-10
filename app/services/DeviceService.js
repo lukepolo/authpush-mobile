@@ -6,6 +6,7 @@ export default class DeviceService {
       .post("devices", {
         type: "ios",
         name: DeviceInfo.getDeviceName(),
+        device_unique_id: DeviceInfo.getUniqueID(),
       })
       .then((response) => {
         return response.data;

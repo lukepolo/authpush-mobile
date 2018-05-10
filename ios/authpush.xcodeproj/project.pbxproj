@@ -1661,7 +1661,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.authpush.mobile;
 				PRODUCT_NAME = authpush;
-				PROVISIONING_PROFILE = "ad6e1ca4-866b-4add-83cc-d32889c12ce0";
+				PROVISIONING_PROFILE = "2621a6b7-e080-440b-8bf8-645cd8af344c";
 				PROVISIONING_PROFILE_SPECIFIER = AuthPush;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1696,7 +1696,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.authpush.mobile;
 				PRODUCT_NAME = authpush;
-				PROVISIONING_PROFILE = "ad6e1ca4-866b-4add-83cc-d32889c12ce0";
+				PROVISIONING_PROFILE = "2621a6b7-e080-440b-8bf8-645cd8af344c";
 				PROVISIONING_PROFILE_SPECIFIER = AuthPush;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
