@@ -1,0 +1,6 @@
+git_url("git@github.com:CodePier/authpush-mobile-certs.git")
+
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier(["io.authpush.mobile"])
+username("lpolicinski@gmail.com") # Your Apple Developer Portal username
