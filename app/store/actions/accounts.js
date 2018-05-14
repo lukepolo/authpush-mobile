@@ -28,7 +28,7 @@ export const AccountRequests = {
     let credentials = urlOtpAuth.parse(otpAuthUrl.data);
     return (dispatch) => {
       accountService.createAccount(credentials).then(() => {
-        dispatch(this.AuthActionCreators.addAccount(credentials));
+        dispatch(AccountActionCreators.addAccount(credentials));
         callback();
       });
     };

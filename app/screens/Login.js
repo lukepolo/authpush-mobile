@@ -7,8 +7,8 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "support@codepier.io",
-      password: "secret",
+      email: "",
+      password: "",
     };
   }
 
@@ -19,11 +19,6 @@ class Login extends Component {
         navigate("Dashboard");
       }),
     );
-    // this.authService.login(this.state).then(() => {
-    //   deviceService.addDeviceToAccount().then((device) => {
-    //     navigate("Dashboard");
-    //   })
-    // });
   }
 
   render() {

@@ -26,7 +26,6 @@ export default class AuthService {
 
   isSignedIn() {
     return new Promise((resolve, reject) => {
-      resolve(false);
       AsyncStorage.getItem(this.AUTH_TOKEN_KEY)
         .then((authToken) => {
           if (authToken !== null) {

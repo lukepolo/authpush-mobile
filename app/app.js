@@ -20,7 +20,7 @@ YellowBox.ignoreWarnings([
 import axios from "axios";
 
 global.axios = axios.create({
-  baseURL: "https://fb9ead28.ngrok.io/api/",
+  baseURL: "https://authpush.io/api/",
 });
 
 let { store, persistor } = configureStore();

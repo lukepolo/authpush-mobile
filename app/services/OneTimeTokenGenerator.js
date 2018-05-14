@@ -2,6 +2,7 @@ import jsSHA from "jssha";
 
 export default class OneTimeTokenGenerator {
   generate(key) {
+    console.info(key);
     return this.totp(key);
   }
 

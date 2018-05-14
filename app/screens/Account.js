@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import OneTimeTokenGenerator from "./../services/OneTimeTokenGenerator";
 
 class Account extends Component {
@@ -16,7 +16,7 @@ class Account extends Component {
 
   generateToken() {
     return this.oneTimeTokenGenerator.generate(
-      this.props.navigation.getParam("account"),
+      this.props.navigation.getParam("account").credentials.key,
     );
   }
 
