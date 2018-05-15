@@ -1,6 +1,5 @@
 import DeviceService from "./../../services/DeviceService";
 
-const deviceService = new DeviceService();
 export const DeviceActions = {
   ADD_DEVICE: "ADD_DEVICE",
   UPDATE_DEVICE: "UPDATE_DEVICE",
@@ -20,6 +19,8 @@ export const DeviceActionCreators = {
     };
   },
 };
+
+const deviceService = new DeviceService();
 
 export const DeviceRequests = {
   createDevice: (callback) => {

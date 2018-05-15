@@ -1,13 +1,9 @@
 import urlOtpAuth from "url-otpauth";
-
 import AccountService from "./../../services/AccountService";
 
 export const AccountsActions = {
   ADD_ACCOUNT: "ADD_ACCOUNT",
-  GET_ACCOUNTS: "GET_ACCOUNTS",
 };
-
-const accountService = new AccountService();
 
 export const AccountActionCreators = {
   addAccount: (credentials) => {
@@ -16,12 +12,9 @@ export const AccountActionCreators = {
       type: AccountsActions.ADD_ACCOUNT,
     };
   },
-  getAccounts: () => {
-    return {
-      type: AccountsActions.GET_ACCOUNTS,
-    };
-  },
 };
+
+const accountService = new AccountService();
 
 export const AccountRequests = {
   getAccount: (otpAuthUrl, callback) => {

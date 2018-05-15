@@ -14,10 +14,6 @@ export default class AuthService {
     });
   }
 
-  onSignIn() {
-    AsyncStorage.setItem(this.AUTH_TOKEN_KEY, "true");
-  }
-
   onSignOut() {
     AsyncStorage.removeItem(this.AUTH_TOKEN_KEY);
     delete axios.defaults.headers.common["Authorization"];

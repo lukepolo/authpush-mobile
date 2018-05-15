@@ -8,15 +8,18 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
 let middleware = [reduxThunk, reduxLogger];
 
-const persistConfig = {
-  storage,
-  key: "root",
-  stateReconciler: autoMergeLevel2,
-};
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export default () => {
-  let store = createStore(persistedReducer, applyMiddleware(...middleware));
+  let store = createStore(
+    persistReducer(
+      {
+        storage,
+        key: "root",
+        stateReconciler: autoMergeLevel2,
+      },
+      rootReducer,
+    ),
+    applyMiddleware(...middleware),
+  );
   let persistor = persistStore(store);
 
   return { store, persistor };

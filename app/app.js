@@ -5,13 +5,6 @@ import AuthService from "./services/AuthService";
 import { createRootNavigator } from "./router";
 import { PersistGate } from "redux-persist/integration/react";
 
-// TODO _ there is a bug watching : https://github.com/react-navigation/react-navigation/issues/3956
-import { YellowBox } from "react-native";
-YellowBox.ignoreWarnings([
-  "Warning: isMounted(...) is deprecated",
-  "Module RCTImageLoader",
-]);
-
 // TODO - move this into its own service and boot that up
 import axios from "axios";
 
@@ -34,14 +27,9 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.authService
-      .isSignedIn()
-      .then((res) => {
-        this.setState({ signedIn: res, checkedSignIn: true });
-      })
-      .catch((err) => {
-        alert("An error occurred");
-      });
+    this.authService.isSignedIn().then((res) => {
+      this.setState({ signedIn: res, checkedSignIn: true });
+    });
   }
 
   // TODO - loading can be a component

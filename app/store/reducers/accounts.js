@@ -18,8 +18,6 @@ export function reducer(state = INITIAL_STATE, action) {
           },
         ],
       };
-    case AccountsActions.GET_ACCOUNTS:
-      return state;
     default:
       return state;
   }

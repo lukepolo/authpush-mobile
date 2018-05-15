@@ -1,12 +1,9 @@
-import AuthService from "./../../services/AuthService";
-
 import { DeviceRequests } from "./devices";
+import AuthService from "./../../services/AuthService";
 
 export const AuthActions = {
   STORE_TOKEN: "STORE_TOKEN",
 };
-
-const authService = new AuthService();
 
 export const AuthActionCreators = {
   storeToken: (authToken) => {
@@ -16,6 +13,8 @@ export const AuthActionCreators = {
     };
   },
 };
+
+const authService = new AuthService();
 
 export const AuthRequests = {
   login: (credentials, callback) => {

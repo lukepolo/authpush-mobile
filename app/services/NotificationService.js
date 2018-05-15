@@ -97,15 +97,9 @@ export default class NotiicationService {
   }
 
   _sendApproval(requestHash) {
-    axios.post(`request/${requestHash}/approve`).then(
-      (response) => {
-        console.info("IT SENT!");
-      },
-      (error) => {
-        console.info("does it error?");
-        console.info(error);
-      },
-    );
+    axios.post(`request/${requestHash}/approve`).then(() => {
+      console.info("IT SENT!");
+    });
   }
 
   _onNotificationReceivedForeground(notification) {
