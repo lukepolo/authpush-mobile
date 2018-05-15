@@ -1,4 +1,3 @@
-import axios from "axios/index";
 import NotificationsIOS, {
   NotificationAction,
   NotificationCategory,
@@ -25,7 +24,7 @@ export default class NotiicationService {
             (action, completed) => {
               NotificationsIOS.log("ACTION RECEIVED");
               NotificationsIOS.log(JSON.stringify(action));
-              this._sendApproval();
+              this._sendApproval(action.notification.getData().requestHash);
               completed();
             },
           ),
@@ -97,11 +96,10 @@ export default class NotiicationService {
     );
   }
 
-  _sendApproval() {
-    axios.get(`${host}/api/accounts/1/otp/approve`).then(
+  _sendApproval(requestHash) {
+    axios.post(`request/${requestHash}/approve`).then(
       (response) => {
-        console.info("does it send?");
-        console.info(response);
+        console.info("IT SENT!");
       },
       (error) => {
         console.info("does it error?");
