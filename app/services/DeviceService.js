@@ -12,4 +12,17 @@ export default class DeviceService {
         return response.data;
       });
   }
+
+  updateDeviceToken(device, token) {
+    return axios
+      .patch(`devices/${device.id}`, {
+        notification_token: token,
+        name: DeviceInfo.getDeviceName(),
+      })
+      .then((response) => {
+        let device = response.data;
+        device.registered = true;
+        return device;
+      });
+  }
 }

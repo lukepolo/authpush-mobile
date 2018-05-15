@@ -7,7 +7,11 @@ const INITIAL_STATE = {
 export function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case DeviceActions.ADD_DEVICE:
-      console.info(action);
+      return {
+        ...state,
+        device: action.device,
+      };
+    case DeviceActions.UPDATE_DEVICE:
       return {
         ...state,
         device: action.device,

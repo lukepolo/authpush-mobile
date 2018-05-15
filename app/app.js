@@ -4,10 +4,6 @@ import { Provider } from "react-redux";
 import AuthService from "./services/AuthService";
 import { createRootNavigator } from "./router";
 import { PersistGate } from "redux-persist/integration/react";
-import {
-  registerNotificationServices,
-  unmountNotificationServices,
-} from "./notifications";
 
 // TODO _ there is a bug watching : https://github.com/react-navigation/react-navigation/issues/3956
 import { YellowBox } from "react-native";
@@ -28,8 +24,6 @@ let { store, persistor } = configureStore();
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-
-    registerNotificationServices();
 
     this.authService = new AuthService();
 
@@ -61,9 +55,5 @@ export default class App extends React.Component {
         </PersistGate>
       </Provider>
     );
-  }
-
-  componentWillUnmount() {
-    unmountNotificationServices();
   }
 }
